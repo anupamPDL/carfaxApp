@@ -1,4 +1,6 @@
 package com.anupam.carfaxapp.retrofit
 
-interface ConnectivityInterceptor {
+import okhttp3.Interceptor
+
+interface ConnectivityInterceptor: Interceptor {
 }

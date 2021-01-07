@@ -1,8 +1,29 @@
 package com.anupam.carfaxapp.ui
 
+import android.content.Intent
+import android.graphics.PorterDuff
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
+import android.widget.Toast
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_main.*
 import com.anupam.carfaxapp.R
+import com.anupam.carfaxapp.adapter.MyCustomRecyclerAdapter
+import com.anupam.carfaxapp.data.entity.CarList
+import com.anupam.carfaxapp.data.entity.Listings
+import com.anupam.carfaxapp.retrofit.GetCarService
+import com.anupam.carfaxapp.retrofit.RetrofitClientInstance
+import kotlinx.android.synthetic.main.activity_details.*
+import kotlinx.android.synthetic.main.activity_main.toolbar
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.*
+import kotlin.collections.ArrayList
 
 /*
     Note: This is a CarFax App developed for Android Technical Assignment.
@@ -22,7 +43,7 @@ import com.anupam.carfaxapp.R
     ● Price
     ● Mileage
     ● Location
-    ● Call dealer button
+    ● Button to call dealer
 
     Tapping on the card will take the user to details screen.
     Likewise, tapping “Call dealer button” will initiate a phone call
@@ -44,13 +65,70 @@ import com.anupam.carfaxapp.R
     ● Engine
     ● Body style
 
-    Main Activity will load the app and display list of cars.
+    Main Activity will load the app, pull json data from the API and display list of cars.
 
  */
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var myCustomRecyclerAdapter: MyCustomRecyclerAdapter
+    private val carListArray = ArrayList<Listings>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        initializeToolBar()
+        initializeRetrofit()
+
+    }
+
+    private fun initializeToolBar() {
+        toolbar.title = "CARFAX"
+        setSupportActionBar(toolbar)
+    }
+
+    private fun initializeRetrofit() {
+
+        val service = RetrofitClientInstance.carList?.create(GetCarService::class.java)
+        val call = service?.getAllCarList()
+
+        call?.enqueue(object : Callback<CarList> {
+
+            override fun onFailure(call: Call<CarList>, t: Throwable) {
+                Toast.makeText(applicationContext, "Something went wrong. Server says: "+t.localizedMessage, Toast.LENGTH_LONG).show()
+                progress_circular.visibility = View.GONE
+            }
+
+            override fun onResponse(call: Call<CarList>, response: Response<CarList>) {
+
+                val body = response.body()
+                val cars = body?.carList
+
+                for(car in cars!!) {
+                    carListArray.add(car)
+                }
+
+                if(response.isSuccessful){
+                    initializeRecyclerView()
+                    progress_circular.visibility = View.GONE
+
+                }else{
+                    Toast.makeText(applicationContext, "Something went wrong. Server says: "+response.message(), Toast.LENGTH_LONG).show()
+                }
+            }
+
+        })
+    }
+
+    private fun initializeRecyclerView() {
+
+        linearLayoutManager = LinearLayoutManager(this)
+        car_list_recycler_view.layoutManager = linearLayoutManager
+        myCustomRecyclerAdapter = MyCustomRecyclerAdapter(carListArray, this)
+        car_list_recycler_view.adapter = myCustomRecyclerAdapter
+        myCustomRecyclerAdapter.notifyDataSetChanged()
+
     }
 }

@@ -10,6 +10,7 @@
         android:id="@+id/cardView_card"
         android:elevation="5dp"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         app:cardCornerRadius="5dp">
 
         <RelativeLayout
@@ -19,16 +20,15 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:id="@+id/imageView_car"
-                android:src="@drawable/test_img"
+                android:id="@+id/imageView_car_main"
+                android:background="@color/photo_holder_bg"
                 android:scaleType="centerCrop"/>
 
             <TextView
-                android:id="@+id/textView_carName"
+                android:id="@+id/textView_carName_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/imageView_car"
-                android:text="2011 BMW 3 Series 328i"
+                android:layout_below="@id/imageView_car_main"
                 android:layout_margin="10dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"/>
@@ -38,22 +38,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:layout_below="@id/textView_carName"
-                android:id="@+id/textView_price_and_miles"
-                android:textColor="@color/black"
-                android:text="$ 17,000 | 39.1k mi"/>
+                android:layout_below="@id/textView_carName_main"
+                android:id="@+id/textView_price_and_miles_main"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView_address"
-                android:layout_below="@id/textView_price_and_miles"
+                android:id="@+id/textView_address_main"
+                android:layout_below="@id/textView_price_and_miles_main"
                 android:layout_margin="10dp"
-                android:textColor="@color/black"
-                android:text="HighLand Park, IL"/>
+                android:textColor="@color/black"/>
 
             <View
-                android:layout_below="@id/textView_address"
+                android:layout_below="@id/textView_address_main"
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -61,15 +59,18 @@
                 android:layout_marginEnd="5dp"
                 android:background="?android:attr/listDivider" />
 
-            <Button
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:layout_below="@id/divider"
-                android:id="@+id/btn_dial"
+                android:id="@+id/btn_dial_main"
                android:layout_margin="10dp"
-                android:textColor="@color/btn_text_color"
-                android:backgroundTint="@color/white"
-                android:text="Call Dealer"/>
+                android:textColor="@color/purple_500"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="@string/call_dealer"/>
 
         </RelativeLayout>
 

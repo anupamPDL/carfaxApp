@@ -8,4 +8,6 @@
     <string name="interior_color">Interior Color</string>
     <string name="exterior_color">Exterior Color</string>
     <string name="location">Location</string>
+    <string name="vehicle_info">Vehicle Info</string>
+    <string name="call_dealer">CALL DEALER</string>
 </resources>

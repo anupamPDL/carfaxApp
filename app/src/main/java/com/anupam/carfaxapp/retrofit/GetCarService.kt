@@ -1,4 +1,11 @@
 package com.anupam.carfaxapp.retrofit
 
-class GetCarService {
+import com.anupam.carfaxapp.data.entity.CarList
+import retrofit2.Call
+import retrofit2.http.GET
+
+interface GetCarService {
+
+    @GET("assignment.json")
+    fun getAllCarList() : Call<CarList>
 }
