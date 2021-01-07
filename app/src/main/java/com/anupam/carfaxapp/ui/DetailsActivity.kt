@@ -1,13 +1,10 @@
 package com.anupam.carfaxapp.ui
 
 import android.content.Intent
-import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import com.anupam.carfaxapp.R
 import com.anupam.carfaxapp.data.entity.Listings
 import com.bumptech.glide.Glide
@@ -15,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_details.*
 import java.util.*
 
 /*
-    Note: This is a CarFax App developed for Android Technical Assignment.
+    Note: This is a simple CarFax App developed for Android Technical Assignment.
     Developed by: Anupam Poudel
     Dated: 2021-01-05
 
@@ -79,11 +76,11 @@ class DetailsActivity : AppCompatActivity() {
 
             if(mileage / 1000 > 1) {
                 refinedMile = (mileage / 1000).toString()
-                priceAndMileage = "$ "+ receivedObj.listPrice + " | "+refinedMile + " k mi"
+                priceAndMileage = "$ "+ receivedObj.listPrice + " | "+refinedMile + "k mi"
             }
             else if(mileage / 1000000 > 1) {
                 refinedMile = (mileage / 1000000).toString()
-                priceAndMileage = "$ "+ receivedObj.listPrice + " | "+refinedMile + " m mi"
+                priceAndMileage = "$ "+ receivedObj.listPrice + " | "+refinedMile + "m mi"
             }else {
                 priceAndMileage = "$ "+ receivedObj.listPrice + " | "+ receivedObj.mileage + " mi"
             }
@@ -110,7 +107,7 @@ class DetailsActivity : AppCompatActivity() {
         }
 
         val photoUrl = receivedObj?.images?.firstPhoto?.large
-        val url = if (photoUrl != null) "$photoUrl?w=360" else null //1
+        val url = if (photoUrl != null) "$photoUrl?w=360" else null
 
         loadImageIntoView(url)
     }
@@ -122,6 +119,6 @@ class DetailsActivity : AppCompatActivity() {
                 .placeholder(R.drawable.placeholder_img)
                 .error(R.drawable.no_imge_placeholder)
                 .fallback(R.drawable.placeholder_no_image)
-                .into(imageView_car) //8
+                .into(imageView_car)
     }
 }

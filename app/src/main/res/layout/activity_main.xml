@@ -17,15 +17,23 @@
         app:layout_scrollFlags="scroll|enterAlways"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@id/toolbar"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
+        android:layout_below="@id/toolbar"
         android:layout_height="match_parent"
-        android:id="@+id/car_list_recycler_view"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"/>
+        android:id="@+id/swipeRefresh">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/car_list_recycler_view"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:layout_width="wrap_content"

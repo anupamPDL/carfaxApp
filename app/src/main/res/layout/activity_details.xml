@@ -290,10 +290,10 @@
             android:layout_below="@id/linear_layout_7"
             android:id="@+id/divider3"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="5dp"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="5dp"
-            android:background="?android:attr/listDivider" />
+            android:background="@drawable/shadow" />
 
         <Button
             android:layout_width="match_parent"
