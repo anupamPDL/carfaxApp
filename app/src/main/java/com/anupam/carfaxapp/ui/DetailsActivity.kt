@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.anupam.carfaxapp.R
 import com.anupam.carfaxapp.data.entity.Listings
-import com.bumptech.glide.Glide
+import com.anupam.carfaxapp.utils.Utility
 import kotlinx.android.synthetic.main.activity_details.*
 import java.util.*
 
@@ -109,16 +109,6 @@ class DetailsActivity : AppCompatActivity() {
         val photoUrl = receivedObj?.images?.firstPhoto?.large
         val url = if (photoUrl != null) "$photoUrl?w=360" else null
 
-        loadImageIntoView(url)
-    }
-
-    private fun loadImageIntoView(imageUrl: String?) {
-        Glide.with(imageView_car)
-                .load(imageUrl)
-                .centerCrop()
-                .placeholder(R.drawable.placeholder_img)
-                .error(R.drawable.no_imge_placeholder)
-                .fallback(R.drawable.placeholder_no_image)
-                .into(imageView_car)
+        Utility.loadImageIntoView(applicationContext, imageView_car, url)
     }
 }

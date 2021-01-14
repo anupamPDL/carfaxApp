@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.anupam.carfaxapp.R
 import com.anupam.carfaxapp.data.entity.Listings
 import com.anupam.carfaxapp.ui.DetailsActivity
-import com.bumptech.glide.Glide
+import com.anupam.carfaxapp.utils.Utility
 import kotlinx.android.synthetic.main.custom_car_list_view.view.*
 
 /*
@@ -66,9 +66,10 @@ class MyCustomRecyclerAdapter(private val cars: ArrayList<Listings>, private val
         }
 
         val photoUrl = car.images?.firstPhoto?.large
-        val url = "$photoUrl?w=360" //1
+        val url = "$photoUrl?w=360"
 
-        loadImageIntoView(holder, url)
+        Utility.loadImageIntoView(context, holder.itemView.imageView_car_main, url)
+
     }
 
     class ItemHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
@@ -90,15 +91,5 @@ class MyCustomRecyclerAdapter(private val cars: ArrayList<Listings>, private val
         val intent = Intent(context, DetailsActivity::class.java)
         intent.putExtra("car_details", car)
         context.startActivity(intent)
-    }
-
-    private fun loadImageIntoView(holder: ItemHolder, imageUrl: String?) {
-        Glide.with(holder.itemView.imageView_car_main)
-                .load(imageUrl)
-                .centerCrop()
-                .placeholder(R.drawable.placeholder_img)
-                .error(R.drawable.no_imge_placeholder)
-                .fallback(R.drawable.placeholder_no_image)
-                .into(holder.itemView.imageView_car_main)
     }
 }

@@ -6,30 +6,21 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import com.anupam.carfaxapp.R
 import com.anupam.carfaxapp.adapter.MyCustomRecyclerAdapter
-import com.anupam.carfaxapp.data.db.CarListDatabase
 import com.anupam.carfaxapp.data.db.DatabaseService
-import com.anupam.carfaxapp.data.entity.CarList
 import com.anupam.carfaxapp.data.entity.Listings
-import com.anupam.carfaxapp.retrofit.GetCarService
-import com.anupam.carfaxapp.retrofit.RetrofitClientInstance
 import kotlinx.android.synthetic.main.activity_main.toolbar
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.lang.NumberFormatException
 import kotlin.collections.ArrayList
 
 /*
-    Note: This is a simple CarFax App developed for Android Technical Assignment.
+    Note: This is a simple CarFax App that shows list of cars and its details.
     Developed by: Anupam Poudel
     Dated: 2021-01-05
 
@@ -78,6 +69,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var myCustomRecyclerAdapter: MyCustomRecyclerAdapter
     private var carListArray = ArrayList<Listings>()
     private lateinit var database: DatabaseService
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 
         if(isNetworkAvailable(this)){
             Toast.makeText(this, "Loading from server.", Toast.LENGTH_LONG).show()
-            initializeRetrofit()
+            initializeRetrofitAndLiveData()
 
         }else{
             Toast.makeText(this, "No network. Loading from db.", Toast.LENGTH_LONG).show()
@@ -120,43 +112,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initializeRetrofit() {
+    private fun initializeRetrofitAndLiveData() {
 
-        val service = RetrofitClientInstance.carList?.create(GetCarService::class.java)
-        val call = service?.getAllCarList()
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel.cars.observe(this, Observer {
 
-        call?.enqueue(object : Callback<CarList> {
+          carResponse -> val cars = carResponse.carList
 
-            override fun onFailure(call: Call<CarList>, t: Throwable) {
-                Toast.makeText(applicationContext, "Something went wrong. Server says: " +
-                        ""+t.localizedMessage, Toast.LENGTH_LONG).show()
-                progress_circular.visibility = View.GONE
+            for(car in cars) {
+                carListArray.add(car)
             }
 
-            override fun onResponse(call: Call<CarList>, response: Response<CarList>) {
-
-                try {
-                    val body = response.body()
-                    val cars = body?.carList
-
-                    for(car in cars!!) {
-                        carListArray.add(car)
-                    }
-
-                    if(response.isSuccessful){
-                        initializeRecyclerView()
-                        saveDataToCache(body.carList)
-                    } else{
-                        Toast.makeText(applicationContext, "Something went wrong. " +
-                                "Server says: $body", Toast.LENGTH_LONG).show()
-                    }
-                    progress_circular.visibility = View.GONE
-
-                }catch (e: NullPointerException){
-                    e.printStackTrace()
-                }
-            }
-
+            initializeRecyclerView()
+            saveDataToCache(cars)
+            progress_circular.visibility = View.GONE
         })
     }
 
