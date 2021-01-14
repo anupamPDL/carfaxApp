@@ -12,6 +12,7 @@ Basic Function:
 1. Main Screen
 
 CarFax App will display a list of vehicles with the following information:
+
 ● Vehicle photo
 ● Year, make, model, trim
 ● Price
